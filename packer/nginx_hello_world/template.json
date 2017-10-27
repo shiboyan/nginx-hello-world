@@ -1,0 +1,27 @@
+{
+    "variables": {
+        "aws_access_key_id": "{{ env `AWS_ACCESS_KEY_ID` }}",
+        "aws_secret_access_key": "{{ env `AWS_SECRET_ACCESS_KEY` }}",
+        "region": "us-east-1",
+        "buildtime": "{{isotime \"2006-01-02-1504\"}}"
+    },
+
+    "builders": [{
+        "type": "amazon-ebs",
+        "ami_name": "centos-7-nginx-hello-world-{{ user `buildtime` }}",
+        "ami_description": "Centos 7.3 with Nginx serving a static 'Hello World!' index page.",
+        "access_key": "{{ user `aws_access_key_id` }}",
+        "secret_key": "{{ user `aws_secret_access_key` }}",
+        "source_ami": "ami-ae7bfdb8",
+        "region": "{{user `region`}}",
+        "ssh_username": "centos",
+        "instance_type": "t2.micro",
+        "associate_public_ip_address": true
+    }],
+
+    "provisioners": [{
+        "type": "chef-solo",
+        "cookbook_paths": ["../../chef"],
+        "run_list": ["nginx_hello_world"]
+    }]
+}

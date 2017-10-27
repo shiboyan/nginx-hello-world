@@ -1,0 +1,4 @@
+.DS_Store
+
+# This is also covered by the .gitignore in /chef, but just in case we run test-kitchen from this dir...
+.kitchen
